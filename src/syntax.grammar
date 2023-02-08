@@ -1,0 +1,31 @@
+@precedence {
+  times @left,
+  plus @left
+}
+
+@top Program { expression }
+
+expression {
+  Name |
+  Number |
+  BinaryExpression |
+  ParenthesizedExpression
+}
+
+BinaryExpression {
+   expression !times (ArithOp<"*">) expression |
+   expression !plus ArithOp<"+" | "-"> expression
+}
+
+ParenthesizedExpression { "(" expression ")" }
+
+ArithOp<expr> { expr }
+@tokens {
+  space { @whitespace+ }
+  Name { @asciiLetter+ }
+  Number { @digit+ }
+
+  "(" ")"
+}
+
+@skip {space}
